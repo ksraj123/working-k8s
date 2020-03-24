@@ -5,7 +5,7 @@ metadata:
   labels:
     app: mongodb
 spec:
-  replicas: 1
+  replicas: {{ .Values.database.replicas }}
   selector:
     matchLabels:
       app: mongodb
@@ -18,11 +18,11 @@ spec:
       volumes:
       - name: nfs-volume
         nfs:
-          server: 10.0.0.2
+          server: {{ .Values.serverVolume.server }}
           path: /sugarizer_vol/sugarizer-server/docker/db
       containers:
       - name: mongodb
-        image: mikkl/multiarch-mongodb:amd64
+        image: {{ .Values.database.image }}
         volumeMounts:
         - name: nfs-volume
           mountPath: /data/db
@@ -33,6 +33,6 @@ spec:
           value: "no"
         ports:
         - name: mongodb
-          containerPort: 27017
-          hostPort: 27017
+          containerPort: {{ .Values.database.port }}
+          hostPort: {{ .Values.database.port }}
           protocol: TCP

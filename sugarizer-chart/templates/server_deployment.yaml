@@ -5,7 +5,7 @@ metadata:
   labels:
     app: server
 spec:
-  replicas: 1
+  replicas: {{ .Values.server.replicas }}
   selector:
     matchLabels:
         app: server
@@ -16,22 +16,22 @@ spec:
           app: server
     spec:
       volumes:
-        - name: sugarizer-server-vol
+        - name: {{ .Values.serverVolume.name }}
           nfs:
-            server: 10.0.0.2
-            path: /sugarizer_vol/sugarizer-server
-        - name: sugarizer-client-vol
+            server: {{ .Values.serverVolume.server }}
+            path: {{ .Values.serverVolume.path }}
+        - name: {{ .Values.clientVolume.name }}
           nfs:
-            server: 10.0.0.2
-            path: /sugarizer_vol/sugarizer-client
+            server: {{ .Values.clientVolume.server }}
+            path: {{ .Values.clientVolume.path }}
       containers:
       - name: sugarizer-server
-        image: llaske/multiarch-node6:amd64
+        image: {{ .Values.server.image }}
         volumeMounts:
-        - name: sugarizer-server-vol
-          mountPath: /sugarizer-server
-        - name: sugarizer-client-vol
-          mountPath: /sugarizer-client
+        - name: {{ .Values.serverVolume.name }}
+          mountPath: {{ .Values.serverVolume.mountPath }}
+        - name: {{ .Values.clientVolume.name }}
+          mountPath: {{ .Values.clientVolume.mountPath }}
         workingDir: /sugarizer-server
         command: ["/bin/sh", "-c"]
         args: ["npm install; node /sugarizer-server/sugarizer.js /sugarizer-server/env/docker.ini"]
@@ -39,9 +39,9 @@ spec:
         - name: NODE_ENV
           value: docker
         - name: MONGO_URL
-          value: mongodb://mongodb.default.svc.cluster.local:27017/
+          value: mongodb://mongodb.default.svc.cluster.local:{{ .Values.database.port }}/
         ports:
-        - containerPort: 80
+        - containerPort: {{ .Values.server.httpPortPod }}
           name: http
-        - containerPort: 8039
+        - containerPort: {{ .Values.server.presencePort }}
           name: presence

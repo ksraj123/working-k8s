@@ -6,8 +6,8 @@ metadata:
     app: mongodb
 spec:
   ports:
-  - port: 27017
-    targetPort: 27017
+  - port: {{ .Values.database.port }}
+    targetPort: {{ .Values.database.port }}
     protocol: TCP
   selector:
     app: mongodb
