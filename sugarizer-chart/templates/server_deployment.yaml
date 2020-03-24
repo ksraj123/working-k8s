@@ -1,17 +1,16 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: server-deployment
+  name: {{ template "sugarizer-chart.fullname" . }}-deployment
 spec:
   replicas: {{ .Values.server.replicas }}
   selector:
     matchLabels:
-        app: server
+        app: {{ template "sugarizer-chart.fullname" . }}-pod
   template:
     metadata:
-        name: server-pod
         labels:
-          app: server
+          app: {{ template "sugarizer-chart.fullname" . }}-pod
     spec:
       volumes:
         - name: {{ .Values.serverVolume.name }}
