@@ -24,6 +24,15 @@ If release name contains chart name it will be used as a full name.
 {{- end -}}
 {{- end -}}
 
+
+{{/*
+Function for names of mongodb deployments and services
+*/}}
+{{- define "mongodb.fullname" -}}
+{{- printf "%s-mongodb" .Release.Name |  trunc 63 | trimSuffix "-" -}}
+{{- end -}}
+
+
 {{/*
 Create chart name and version as used by the chart label.
 */}}
@@ -31,18 +40,6 @@ Create chart name and version as used by the chart label.
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
-{{/*
-Common labels
-*/}}
-{{- define "sugarizer-chart.labels" -}}
-app.kubernetes.io/name: {{ include "sugarizer-chart.name" . }}
-helm.sh/chart: {{ include "sugarizer-chart.chart" . }}
-app.kubernetes.io/instance: {{ .Release.Name }}
-{{- if .Chart.AppVersion }}
-app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
-{{- end }}
-app.kubernetes.io/managed-by: {{ .Release.Service }}
-{{- end -}}
 
 {{/*
 Create the name of the service account to use

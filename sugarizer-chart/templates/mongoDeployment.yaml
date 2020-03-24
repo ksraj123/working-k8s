@@ -1,17 +1,16 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: database-deployment
+  name: {{ template "mongodb.fullname" . }}-deployment
 spec:
   replicas: {{ .Values.database.replicas }}
   selector:
     matchLabels:
-      app: mongodb
+      app: {{ template "mongodb.fullname" . }}-pod
   template:
     metadata:
-      name: mongodb-pod
       labels:
-        app: mongodb
+        app: {{ template "mongodb.fullname" . }}-pod
     spec:
       volumes:
       - name: nfs-volume
