@@ -3,7 +3,7 @@ kind: Service
 metadata:
   name: {{ template "sugarizer-chart.fullname" . }}-service
 spec:
-  type: {{ Values.server.serviceType }}
+  type: {{ .Values.server.serviceType }}
   ports:
   - port: {{ .Values.server.httpPortExternal }}
     targetPort: {{ .Values.server.httpPortPod }}
