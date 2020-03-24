@@ -2,8 +2,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: database-deployment
-  labels:
-    app: mongodb
 spec:
   replicas: {{ .Values.database.replicas }}
   selector:
