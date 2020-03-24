@@ -6,6 +6,7 @@ database:
 server:
   image: llaske/multiarch-node6:amd64
   replicas: 1
+  serviceType: LoadBalancer
   httpPortPod: 80
   httpPortExternal: 8080
   presencePort: 8039
