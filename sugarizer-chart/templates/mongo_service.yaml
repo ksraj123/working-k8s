@@ -8,4 +8,4 @@ spec:
     targetPort: {{ .Values.database.port }}
     protocol: TCP
   selector:
-    app: mongodb
+    app: {{ template "mongodb.fullname" . }}-pod
