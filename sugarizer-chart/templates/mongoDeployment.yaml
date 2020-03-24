@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: {{ template "mongodb.fullname" . }}-deployment
 spec:
-  replicas: {{ .Values.database.replicas }}
+  replicas: 1
   selector:
     matchLabels:
       app: {{ template "mongodb.fullname" . }}-pod
